@@ -1,6 +1,6 @@
 ---
 name: adversarial-loop
-description: The central operating loop for autonomous sandbox build-out - empirical plus adversarial. The implementer takes a goal and builds it phase by phase, proving every change against oracles (unit/integration/DST/chaos tests, underpinned by tracing and metrics); an adversarial review attacks each phase; a triage agent 4Ds the findings into do, session/scraps.md, or dropped. Ends by generating session/replay-guide.md, never by shipping. Use whenever building autonomously in a sandbox. Read before starting any non-trivial build.
+description: The central operating loop for autonomous sandbox build-out - empirical plus adversarial. The implementer takes a goal and builds it phase by phase - holding the pen itself or delegating a phase to a sub-agent when context runs short - proving every change against oracles (unit/integration/DST/chaos tests, underpinned by tracing and metrics); a blind oracle sub-agent black-box tests the contract first; an adversarial review attacks each phase; a triage agent 4Ds the findings into do, session/scraps.md, or dropped. Ends by generating session/replay-guide.md, never by shipping. Use whenever building autonomously in a sandbox. Read before starting any non-trivial build.
 ---
 
 # The Adversarial Loop
@@ -12,20 +12,31 @@ An agent that writes code and reads it back is flying blind: the model wrote the
 The input is the goal: authored in the human zone, refined by the `scout`, living at `session/goal.md` in the sandbox. The implementer builds it phase by phase, not all in one go. Each phase:
 
 ```
-implement the phase -> prove against the oracles -> adversarial review (fresh context)
+implement the phase -> blind oracle writes contract tests (fresh context, surface only)
+   -> prove against the oracles -> adversarial review (fresh context)
    -> triage agent (4Ds) -> fix the do-list -> review again
    -> only nits left? next phase
 ```
 
-Three agents, three jobs. The implementer writes code and proves it works. The adversarial review pokes holes. The triage agent decides which holes are worth filling. Collapse any two of them into one context and that job stops working.
+Four agents, four jobs. The implementer writes code and proves it works. The blind oracle tests the contract without ever seeing the code. The adversarial review pokes holes. The triage agent decides which holes are worth filling. Collapse any two of them into one context and that job stops working.
 
 ## Topology
 
-The implementer is the root agent. The adversarial review and the triage agent are sub-agents, spawned fresh each phase.
+The implementer is the root agent. The blind oracle, the adversarial review, and the triage agent are sub-agents, spawned fresh each phase.
 
-Why not a neutral orchestrator over three sub-agents? Context. The implementer is the only role that benefits from history - the goal, the scout's insights, what was tried and rejected. Fresh context is the adversarial review's feature and would be the implementer's handicap. An orchestrator holds no role of its own and pays handoff cost in both directions for nothing.
+Why not a neutral orchestrator over four sub-agents? Context. The implementer is the only role that benefits from history - the goal, the scout's insights, what was tried and rejected. Fresh context is the other roles' feature and would be the implementer's handicap. A stateless orchestrator holds no role of its own and pays handoff cost in both directions for nothing.
 
-The leak to guard is the implementer holding the pen on what the other two see. Findings travel through files, never through the implementer's paraphrase: the adversarial review writes findings to a file, the triage agent reads the code and that file directly, and the implementer receives only the triaged do-list. An implementer summarising the review for triage is the author filtering its own review.
+The leak to guard is the implementer holding the pen on what the other roles see. Findings travel through files, never through the implementer's paraphrase: the adversarial review writes findings to a file, the triage agent reads the code and that file directly, and the implementer receives only the triaged do-list. An implementer summarising the review for triage is the author filtering its own review.
+
+## Who holds the pen
+
+The root agent implements by default, per the topology above. But it can farm a phase's implementation to a fresh sub-agent and keep only orchestration: plan the phase, write the brief, spawn the implementer, route the triaged do-list back. Decide per phase, not per run.
+
+Delegate when context pressure demands it. Long multi-phase runs die by compaction when the root writes the code itself - the diffs, the test output, the dead ends all accumulate in the one window that also has to survive to generate session/replay-guide.md. A delegated phase costs the root a brief and a result summary instead of the whole trail. If the projection is that the remaining phases plus the replay guide do not fit in the current window, stop holding the pen.
+
+Delegation also buys role hygiene by construction instead of by discipline. With a sub-agent implementer, raw adversarial findings cannot reach the pen even by accident: triage filters first, gold-plating dies in `session/scraps.md` or in the Delete bin, and the implementation context only ever contains the goal, the phase brief, and the do-list.
+
+The cost is real: a sub-agent implementer reads the goal fresh and explores the code fresh, every phase. For work that fits comfortably in the root's window, that re-onboarding is pure overhead and the root should keep the pen. This is the same trade the Stopping section makes for the replay guide - hot context is an asset, spend it while it holds.
 
 ## Prove, don't trust
 
@@ -68,6 +79,16 @@ Oracles rely on a realistic test environment. Run each in the cheapest environme
 The quality of the code the implementer can write is directly proportional to the falsification depth of the oracles. The oracles must be able to prove what the implementer wrote is wrong - that is the only feedback that corrects code mistakes. Unit tests falsify logic. Integration falsifies wiring. Only DST or chaos falsifies a fencing race. Ask an agent to build past the depth of its oracles and it will: the code will look right, pass everything available, and carry the bugs nothing could catch.
 
 So before implementing, ask: can the current oracles falsify the failure modes of this phase? If they can and do not exist yet, the oracle is the first deliverable, not the feature. If the behaviour is unfalsifiable by any oracle - UX, the feel of a screen - that is not a missing sensor to build, it is UX testing: queue it for the human.
+
+## The blind oracle
+
+The implementer's tests inherit the implementer's assumptions. The context that wrote the bug writes the tests that check for it, and both share the same blind spot: the tests verify the code as built, not the contract as promised.
+
+The blind oracle is a fresh sub-agent handed only the external surface - the public API, the goal's contract, whatever a consumer of the system would get - and told to write tests against it. Unit, integration, DST, or chaos, whichever layers the contract demands. It never reads the implementation. Black box, fresh context.
+
+It writes the first tests. Once a phase's surface settles - which can be before the implementation exists - the blind oracle's tests define what satisfying the contract means, and the phase is not proven until they pass. The implementer still writes its own tests on top - seeing the internals is a privilege the oracle deliberately lacks, and it reaches edge cases, error paths, and invariants invisible from outside. Two complementary test sets: the blind oracle proves the promise, the implementer proves the mechanism.
+
+The leak to guard: an oracle that peeks at the implementation is the author's test suite with extra steps. Give it the interface and the test scaffolding, not the implementation source.
 
 ## The adversarial review
 

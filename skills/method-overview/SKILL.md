@@ -22,7 +22,7 @@ Part of goal authoring is checking the goal makes sense and is achievable. Agent
 
 ## The sandbox
 
-A refined goal is never implemented inside the shippable code. The prep step copies it to a sandbox, and the implementer builds it there phase by phase under the `adversarial-loop`: prove each phase against oracles (unit, integration, DST, chaos - `test-taxonomy`, `unit-testing-discipline` - underpinned by tracing and metrics), adversarial review from a fresh context, 4D triage into a do-list and session/scraps.md. Falsification depth bounds what the agent can build; the oracles must be able to prove the implementation wrong.
+A refined goal is never implemented inside the shippable code. The prep step copies it to a sandbox, and the implementer builds it there phase by phase under the `adversarial-loop`: a blind oracle sub-agent writes black-box tests against the phase's external surface first, then prove each phase against oracles (unit, integration, DST, chaos - `test-taxonomy`, `unit-testing-discipline` - underpinned by tracing and metrics), adversarial review from a fresh context, 4D triage into a do-list and session/scraps.md. Falsification depth bounds what the agent can build; the oracles must be able to prove the implementation wrong. The implementer holds the pen by default but can delegate a phase's implementation to a sub-agent when the run is long enough that context, not capability, becomes the constraint.
 
 The work is autonomous: anything needing a human queues in scraps.md and surfaces at loop end. The agent interrupts mid-loop only for a nuclear, non-deferrable design fork or blocking UX testing. State lives in session/session-state.md, session/progress.md, and session/scraps.md.
 
