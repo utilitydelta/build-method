@@ -1,0 +1,7 @@
+.DS_Store
+.claude/settings.local.json
+node_modules/
+
+# qdrant-indexer folder summaries (machine-generated)
+.index.md
+**/.index.md
