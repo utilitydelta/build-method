@@ -1,7 +1,7 @@
 {
   "name": "build-method",
   "description": "Tyson's engineering method as Claude Code skills. The adversarial loop, the scout, persona-first design, writing and comment discipline, hierarchical context docs, the test taxonomy, performance as an invariant, and cross-language coding style. The cross-cutting methodology that sits above any one repo.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": {
     "name": "Tyson Brown"
   },

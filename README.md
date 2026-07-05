@@ -40,5 +40,6 @@ Once installed, the skills load in every session regardless of which repo you la
 ## Adjacent work
 
 - [human-replay](https://github.com/utilitydelta/human-replay) - sandbox prep, replay-guide generation, and the VS Code replay extension. The method's prep and replay stages.
+- [human-replay-vscode-extension](https://marketplace.visualstudio.com/items?itemName=UtilityDelta.human-replay) - make human replay fun, just hit `tab` and the magic happens.
 - [debate-battle](https://github.com/utilitydelta/debate-battle) - the multi-agent debate engine the scout runs goals through.
-- [react-mobx-mvvm](https://github.com/utilitydelta/react-mobx-mvvm) - the MVVM reference implementation behind coding-style's TypeScript rules.
+- [react-mobx-mvvm](https://github.com/utilitydelta/react-mobx-mvvm) - my opinionated take at how to build front end with agents using MVVM.

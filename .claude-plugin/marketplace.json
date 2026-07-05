@@ -8,7 +8,7 @@
       "name": "build-method",
       "source": "./",
       "description": "Tyson's engineering method as Claude Code skills. The cross-cutting methodology that sits above any one repo.",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "homepage": "https://github.com/utilitydelta/build-method",
       "license": "UNLICENSED"
     }

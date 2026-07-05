@@ -12,8 +12,8 @@ An agent that writes code and reads it back is flying blind: the model wrote the
 The input is the goal: authored in the human zone, refined by the `scout`, living at `session/goal.md` in the sandbox. The implementer builds it phase by phase, not all in one go. Each phase:
 
 ```
-implement the phase -> blind oracle writes contract tests (fresh context, surface only)
-   -> prove against the oracles -> adversarial review (fresh context)
+blind oracle writes contract tests (fresh context, surface only) -> run them: red
+   -> implement the phase -> prove against the oracles -> adversarial review (fresh context)
    -> triage agent (4Ds) -> fix the do-list -> review again
    -> only nits left? next phase
 ```
@@ -86,9 +86,17 @@ The implementer's tests inherit the implementer's assumptions. The context that 
 
 The blind oracle is a fresh sub-agent handed only the external surface - the public API, the goal's contract, whatever a consumer of the system would get - and told to write tests against it. Unit, integration, DST, or chaos, whichever layers the contract demands. It never reads the implementation. Black box, fresh context.
 
-It writes the first tests. Once a phase's surface settles - which can be before the implementation exists - the blind oracle's tests define what satisfying the contract means, and the phase is not proven until they pass. The implementer still writes its own tests on top - seeing the internals is a privilege the oracle deliberately lacks, and it reaches edge cases, error paths, and invariants invisible from outside. Two complementary test sets: the blind oracle proves the promise, the implementer proves the mechanism.
+It writes the first tests, before the implementation exists. As soon as a phase's surface settles - the API shape, not the code behind it - the blind oracle writes the contract tests and they run red. The implementer builds to green; the phase is not proven until the blind set passes. The implementer still writes its own tests on top - seeing the internals is a privilege the oracle deliberately lacks, and it reaches edge cases, error paths, and invariants invisible from outside. Two complementary test sets: the blind oracle proves the promise, the implementer proves the mechanism.
 
 The leak to guard: an oracle that peeks at the implementation is the author's test suite with extra steps. Give it the interface and the test scaffolding, not the implementation source.
+
+The reverse leak matters as much: the implementer does not edit blind-authored assertions. A blind test that looks wrong is a finding - route it through triage. A wrong contract test is possible; a quietly rewritten one is the author grading its own work again, with extra steps.
+
+## Red before green
+
+A test is evidence only after it has been seen to fail. Born green, it either cannot fail or tests what already worked - it proves nothing.
+
+Changed behaviour: predict the breakage. Before implementing, record in session/progress.md which existing tests will break and how. Failing as predicted is the change landing. Failing off-list, or surviving when it should have broken, is a finding - not churn. Append-only keeps the prediction honest; it cannot be rewritten to match the outcome.
 
 ## The adversarial review
 
