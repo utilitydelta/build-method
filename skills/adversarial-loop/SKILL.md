@@ -104,6 +104,7 @@ A fresh sub-agent with no memory of writing the code, told to break it. It can r
 
 - Prefer a non-agent oracle where one exists - a conformance suite, reference tests, an invariant checker. It cannot be flattered.
 - Do not tell the review the code is fine. Tell it to find what is wrong.
+- Attack the layer below the safety claim. When the code justifies itself by citing an invariant or an existing mechanism ("rides the existing X", "reuses Y"), that citation is where the author stopped thinking. Price the resource underneath: how often does the new work fire under load, how long does it hold the resource, and who queues behind it.
 
 ## The triage agent: 4Ds
 
@@ -117,6 +118,8 @@ The triage agent sits between them, reads the goal, the code, and the findings f
 - **Delete** - hardening past the goal. Gold-plating. Dropped, not carried anywhere; its disposition line in session/progress.md is the only trace.
 
 "Correct but not worth it" is a real verdict the adversarial review cannot reach, because it has no cost model. Triage does.
+
+One verdict triage cannot reach on its own: closing a performance finding. A perf finding closes only against a measurement from a healthy instrument. "Noise is large" and "the threshold is miscalibrated" are claims about the instrument, and an oracle that fails on unmodified main indicts the environment or the threshold, not nothing. Until a clean-instrument run decides which, the finding is a Defer with its re-verify condition attached, not a close.
 
 ## Scraps
 
