@@ -1,6 +1,6 @@
 ---
 name: adversarial-loop
-description: The central operating loop for autonomous sandbox build-out - empirical plus adversarial. The implementer takes a goal and builds it phase by phase - holding the pen itself or delegating a phase to a sub-agent when context runs short - proving every change against oracles (unit/integration/DST/chaos tests, underpinned by tracing and metrics); a blind oracle sub-agent black-box tests the contract first; an adversarial review attacks each phase; a triage agent 4Ds the findings into do, session/scraps.md, or dropped. Ends by generating session/replay-guide.md, never by shipping. Use whenever building autonomously in a sandbox. Read before starting any non-trivial build.
+description: The central operating loop for autonomous build-out - empirical plus adversarial. The implementer takes a goal and builds it phase by phase - holding the pen itself or delegating a phase to a sub-agent when context runs short - proving every change against oracles (unit/integration/DST/chaos tests, underpinned by tracing and metrics); a blind oracle sub-agent black-box tests the contract first; an adversarial review attacks each phase; a triage agent 4Ds the findings into do, session/scraps.md, or dropped. Ends when a phase's review returns only nits. Use whenever building autonomously. Read before starting any non-trivial build.
 ---
 
 # The Adversarial Loop
@@ -9,7 +9,7 @@ An agent that writes code and reads it back is flying blind: the model wrote the
 
 ## The loop
 
-The input is the goal: authored in the human zone, refined by the `scout`, living at `session/goal.md` in the sandbox. The implementer builds it phase by phase, not all in one go. Each phase:
+The input is the goal: authored in the human zone, refined by the `scout`, living at `session/goal.md`. The implementer builds it phase by phase, not all in one go. Each phase:
 
 ```
 blind oracle writes contract tests (fresh context, surface only) -> run them: red
@@ -32,11 +32,11 @@ The leak to guard is the implementer holding the pen on what the other roles see
 
 The root agent implements by default, per the topology above. But it can farm a phase's implementation to a fresh sub-agent and keep only orchestration: plan the phase, write the brief, spawn the implementer, route the triaged do-list back. Decide per phase, not per run.
 
-Delegate when context pressure demands it. Long multi-phase runs die by compaction when the root writes the code itself - the diffs, the test output, the dead ends all accumulate in the one window that also has to survive to generate session/replay-guide.md. A delegated phase costs the root a brief and a result summary instead of the whole trail. If the projection is that the remaining phases plus the replay guide do not fit in the current window, stop holding the pen.
+Delegate when context pressure demands it. Long multi-phase runs die by compaction when the root writes the code itself - the diffs, the test output, the dead ends all accumulate in the one window. A delegated phase costs the root a brief and a result summary instead of the whole trail.
 
 Delegation also buys role hygiene by construction instead of by discipline. With a sub-agent implementer, raw adversarial findings cannot reach the pen even by accident: triage filters first, gold-plating dies in `session/scraps.md` or in the Delete bin, and the implementation context only ever contains the goal, the phase brief, and the do-list.
 
-The cost is real: a sub-agent implementer reads the goal fresh and explores the code fresh, every phase. For work that fits comfortably in the root's window, that re-onboarding is pure overhead and the root should keep the pen. This is the same trade the Stopping section makes for the replay guide - hot context is an asset, spend it while it holds.
+The cost is real: a sub-agent implementer reads the goal fresh and explores the code fresh, every phase. For work that fits comfortably in the root's window, that re-onboarding is pure overhead and the root should keep the pen.
 
 ## Prove, don't trust
 
@@ -126,11 +126,11 @@ One verdict triage cannot reach on its own: closing a performance finding. A per
 `session/scraps.md` is the backlog of Defer and Delegate leftovers - findings triage judged real but not worth implementing in the current phase. It is mutable and it has readers:
 
 - At the start of each phase, the implementer reads it and picks up anything that now traces to the goal.
-- At loop end, whatever is unconsumed surfaces to the human zone with the delegations, then dies with the other md artifacts at fold-back.
+- At loop end, whatever is unconsumed surfaces to the human zone with the delegations, then dies with the other loop docs.
 
 ## Interrupting the human
 
-Sandbox work is autonomous; the human does not want to hear from the agent. The default route for anything needing a human - including every triage Delegate - is `session/scraps.md`, surfaced at loop end. Interrupt mid-loop only when the loop genuinely cannot proceed:
+Loop work is autonomous; the human does not want to hear from the agent. The default route for anything needing a human - including every triage Delegate - is `session/scraps.md`, surfaced at loop end. Interrupt mid-loop only when the loop genuinely cannot proceed:
 
 1. A **nuclear design call** - a genuine fork the goal never anticipated, that cannot be deferred, where building on would commit the work to one arm of the fork.
 2. **Blocking UX testing** - a click-through that cannot be deferred, or that the implementer must see to know the path forward.
@@ -139,7 +139,7 @@ Sandbox work is autonomous; the human does not want to hear from the agent. The 
 
 ## Resumability
 
-Autonomous runs die: context compaction, a crashed session, a cap resumed tomorrow. The loop survives through its docs, kept current as the work happens, not as end-of-session housekeeping. Every session-generated doc - the goal, the loop docs, the guide - lives in `session/` at the sandbox root, and the whole folder dies at fold-back.
+Autonomous runs die: context compaction, a crashed session, a cap resumed tomorrow. The loop survives through its docs, kept current as the work happens, not as end-of-session housekeeping. Every session-generated doc - the goal, the loop docs, the guide - lives in `session/` at the repo root. The folder never ships: it dies when the work does, and it is never committed.
 
 - **session/session-state.md - mutable.** Where the build is right now: current phase, the step in flight, next action, open questions. Overwritten freely. A fresh context reads this to resume.
 - **session/progress.md - append-only.** What happened: phases completed, decisions and their why, findings and their 4D dispositions. Never edited, only appended. This is the audit trail - a disposition recorded here cannot be quietly rewritten when the implementer later disagrees with it.
@@ -147,11 +147,13 @@ Autonomous runs die: context compaction, a crashed session, a cap resumed tomorr
 
 If session/session-state.md does not say what to do next, it is stale, and stale is worse than absent.
 
-session/session-state.md and session/progress.md record the walk, not the destination. The sandbox path is gradient descent - wrong turns, backtracks, dead spikes. Anything derived from the build (session/replay-guide.md, docs, PR text) reads the settled final code, never the trail. The trail exists to resume the loop and audit dispositions, nothing else.
+session/session-state.md and session/progress.md record the walk, not the destination. The build path is gradient descent - wrong turns, backtracks, dead spikes. Anything derived from the build (session/replay-guide.md, docs, PR text) reads the settled final code, never the trail. The trail exists to resume the loop and audit dispositions, nothing else.
 
 ## Stopping
 
-The loop stops when the goal is implemented and a phase's review returns only nits. Then, before completing - while the full build context is still hot - the implementer generates `session/replay-guide.md`: the ordered path the human replays into the shippable code. Do not leave the guide for a later session; a cold context reconstructing the build produces a worse guide than the agent that just walked it.
+The loop stops when the goal is implemented and a phase's review returns only nits. 
+
+If the user is running this build in ~/sandbox/* and has human-replay skills installed, generate a `session/replay-guide.md`: the ordered path the human replays into the shippable code. Do not leave the guide for a later session; a cold context reconstructing the build produces a worse guide than the agent that just walked it.
 
 Read the replay guide generation skill first, then decide: build the guide directly (the default - the hot context is the asset), or sub-agent the generation when the remaining context cannot hold the skill plus the guide. Either way the guide reads the settled final code, not the trail, and sandboxed agent-led code never ships directly.
 
@@ -165,4 +167,4 @@ This is the internal loop; the other skills feed it or check it.
 - Check: `unit-testing-discipline` and `test-taxonomy` (how the oracles are built), `performance-discipline` (the performance oracle).
 - Govern the output: `coding-style`, `comment-discipline`, `writing-style`.
 
-The replay of the sandbox build into the shippable code belongs to the human - the loop proves behaviour, it does not replace the human walking the territory. See `method-overview` for how the zones connect.
+When the build ran in a sandbox, the replay into the shippable code belongs to the human - the loop proves behaviour, it does not replace the human walking the territory. See `method-overview` for how the zones connect and where sandboxing fits.
