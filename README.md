@@ -18,6 +18,7 @@ The keystone is `adversarial-loop`; `method-overview` is the map. The rest feed 
 | `adversarial-loop` | The internal loop: the implementer proves each phase against oracles (unit/integration/DST/chaos, tracing, metrics), adversarial review, 4D triage, session/scraps.md, ends in session/replay-guide.md. |
 | `scout` | Goal validation: research, spikes, and debate in a throwaway repo; goal insights and refinement back to the human zone. |
 | `persona-driven-design` | Document a real persona before any code. Why the goals exist and who they serve. |
+| `ux-verification` | Human-dictated journeys bound to oracle-authored tests; telemetry, tri-parity, and geometry assertions instead of vision models; the visual-residual ledger handed to replay. |
 | `writing-style` | The prose rules for docs, comments, commits, and conversation. |
 | `comment-discipline` | Kills verbose narration, comment drift, and dead-spec linkbacks. |
 | `hierarchical-context-docs` | L0 to Lx architecture docs that disclose progressively instead of dumping the codebase. |
@@ -43,3 +44,7 @@ Once installed, the skills load in every session regardless of which repo you la
 - [human-replay-vscode-extension](https://marketplace.visualstudio.com/items?itemName=UtilityDelta.human-replay) - make human replay fun, just hit `tab` and the magic happens.
 - [debate-battle](https://github.com/utilitydelta/debate-battle) - the multi-agent debate engine the scout runs goals through.
 - [react-mobx-mvvm](https://github.com/utilitydelta/react-mobx-mvvm) - my opinionated take at how to build front end with agents using MVVM.
+
+## License
+
+MIT. See [LICENSE](./LICENSE).

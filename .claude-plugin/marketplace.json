@@ -7,10 +7,10 @@
     {
       "name": "build-method",
       "source": "./",
-      "description": "Tyson's engineering method as Claude Code skills. The cross-cutting methodology that sits above any one repo.",
-      "version": "1.0.0",
+      "description": "UtilityDelta's engineering method as Claude Code skills. The cross-cutting methodology that sits above any one repo.",
+      "version": "1.1.0",
       "homepage": "https://github.com/utilitydelta/build-method",
-      "license": "UNLICENSED"
+      "license": "MIT"
     }
   ]
 }

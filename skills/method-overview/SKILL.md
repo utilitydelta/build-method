@@ -13,7 +13,7 @@ Where the human works and the shippable code lives. Four activities:
 
 - **Goal authoring.** Goals are the artifact handed to agents. They exist to serve a persona - `persona-driven-design` is why the goals exist and who they are for.
 - **Hierarchical context docs.** How agents onboard to the architecture without swallowing the codebase. See `hierarchical-context-docs`.
-- **UX testing.** The gap no oracle can fill: a human clicking buttons and viewing screens.
+- **UX testing.** The gap no oracle can fill: a human clicking buttons and viewing screens. `ux-verification` shrinks that gap - human-dictated journeys bound to oracle-authored tests, and the agent's visual-residual ledger tells the human exactly which screens need eyes at replay.
 - **Replay.** Folding sandbox work back into the shippable code, below.
 
 ## Scout

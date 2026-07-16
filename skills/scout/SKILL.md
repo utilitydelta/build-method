@@ -1,6 +1,6 @@
 ---
 name: scout
-description: Goal validation before implementation - agent-led research, throwaway spikes, and multi-agent debate in a disposable repo, producing goal insights and goal refinement back to the human zone. Use when a goal is being authored, when a goal feels under-tested or unachievable, or before handing a goal to the sandbox. Feeds the adversarial loop.
+description: Goal and journey validation before implementation - agent-led research, throwaway spikes, and multi-agent debate in a disposable repo, producing insights and refinement back to the human zone. Use when a goal or a UX journey is being authored, feels under-tested or unachievable, or before handing either to the sandbox. Feeds the adversarial loop.
 ---
 
 # Scout
@@ -16,6 +16,14 @@ Autonomy here is even higher than in the sandbox. Everything is throwaway, so th
 1. **Research.** Prior art on the web and in organizational notes, driven by the goal and what the human is trying to achieve. What already exists, what failed before, what the goal is up against.
 2. **Spikes.** Real executable throwaway code that proves the path. One question per spike, no production bar. If a spike has not answered its question in a bounded effort, that is itself the finding: the concern is harder than the goal assumes, escalate to the human.
 3. **Debate.** Run the goal through the debate battle engine to surface tension and the problems the debaters see that you do not. Capture what breaks.
+
+## Journeys are goals too
+
+A goal with a user-facing surface carries `journeys/` alongside `goal.md`, and a journey straight from the human's head has the same problem the goal does. The steps encode untested assumptions, and the entry states the human never dictated are where the worst bugs hide. Once the blind oracle binds tests to a journey it becomes a contract, so a hole that survives to binding becomes a well-tested hole.
+
+Scout journeys with the same three components. Research how existing apps carry the same flow and where users abandon it. Spike a step whose mechanics are uncertain. Debate the journey for missing entry states, steps that contradict the persona, and sequences no first-time user would survive. Findings return as proposed deltas; the human accepts or rejects them and stays the author - `ux-verification` owns the authorship and binding rules.
+
+Scale the ceremony to the journey's weight. The primary persona's core journey earns a debate; a settings screen does not.
 
 ## Output: goal insights and goal refinement
 
