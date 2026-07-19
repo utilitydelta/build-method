@@ -26,6 +26,7 @@ The keystone is `adversarial-loop`; `method-overview` is the map. The rest feed 
 | `test-taxonomy` | Unit vs integration vs DST vs chaos - what each catches, when to reach. |
 | `performance-discipline` | Performance as an invariant: benchmark, flamegraph, the per-decision cost choices. |
 | `coding-style` | Data-oriented, low-state, library restraint. Per-language idioms and bans in `references/`. |
+| `compressed-mode` | Get rid of the default LLM response prose to save your reading time and tokens. |
 
 ## Install
 
