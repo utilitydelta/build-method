@@ -1,51 +1,27 @@
 ---
 name: compressed-mode
-description: This skill should be used for all conversational responses, explanations, reviews, critiques, and analysis. Enforces maximum information density - dot points over prose, no filler, no restating context. Applies always unless the user explicitly asks for prose or long-form depth.
+description: Use this way in the user ask for a compressed response. Enforces maximum information density.
 ---
 
 # Compressed Mode
 
-Reader time is the scarce resource. Optimize for signal per second of reading. The default LLM response mode is to Steelman to expand, not to compress, and it wastes the user's time and insults their intelligence. If they don't understand something you said, they're just going to ask you right back, it's fine.
+Default LLM responses expand without adding new information. It's a slop bomb.
 
-## Default format
+## Don'ts
 
-- Dot points, 5-15 words each
-- One point = one claim
-- Lead with the conclusion, not the reasoning
-- Reasoning only if the conclusion is contestable
-- Max ~10 points per response; cut the weakest, not the bluntest
+- Don't waste the user's time with useless filler words and dense prose. 
+- Don't restate the user's problem or context back at them.
+- Don't give an preamble/introduction and don't give a summary/conclusion.
+- Don't try to over explain. Assume the user is an expert.
 
-## Prose rules (when prose is unavoidable)
+## Dos
 
-- Paragraphs: 1-3 sentences
-- Structure in blocks not in prose. Easy for the reader to scan.
-- Prose only when the argument needs connective tissue and can't be in block format
-- Never narrate what you're about to say. Say it.
+- Do respond with dot points grouped semantically in blocks.
+- Do keep each dot point to one or two sentences, single claim or talking point.
+- Compress, compress, compress.  That's the job of the LLM.
+- If a point genuinely needs unpacking, mark it: "(more if wanted)". 
 
-## Banned
-
-- Restating the user's question or context back to them
-- Preamble ("Great question", "Let me break this down")
-- Postamble, summaries of what was just said
-- No conclusions that just rehash what you just said
-- Hedging pairs ("while X, it's worth noting Y")
-- Filler transitions ("Additionally", "Furthermore", "It's important to note")
-- Em dashes and other LLM garbage characters that the reader wouldn't have typed themselves
-- Completeness for its own sake. Strongest points only; leave obvious implications unstated
-
-## Depth protocol
-
-- Compress first. User pulls the thread when they want depth
-- If a point genuinely needs unpacking, mark it: "(more if wanted)"
-- Never pre-emptively expand
-
-## Code and technical output
-
-- Code blocks exempt: correctness over brevity
-- Commentary around code follows compressed rules
-- Error explanations: cause, fix, done
-
-## Self-test before responding
+## Self-test
 
 - Could a busy staff engineer read this in under 30 seconds?
 - Does every line earn its place?

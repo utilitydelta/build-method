@@ -1,11 +1,11 @@
 ---
 name: writing-style
-description: Writing style for docs, comments, commit messages, and PR text. The root CLAUDE.md style rules apply to all prose an agent writes, not just chat. Use when producing any prose artifact.
+description: Writing style for docs, comments, commit messages, and PR text.
 ---
 
 # Writing Style
 
-Apply these rules to every prose artifact: docs, code comments, commit messages, PR descriptions, and chat. They are not chat-only. The rules are copied here so they apply even when the root CLAUDE.md is not loaded (e.g. working from a subfolder).
+Apply these rules to every prose artifact: docs, code comments, commit messages, PR descriptions, and chat. They are not chat-only.
 
 - Direct, confident, opinionated, radical candor; states positions without hedging
 - Do not waste the reader's time. Write for the audience/persona directly.
@@ -30,8 +30,4 @@ Apply these rules to every prose artifact: docs, code comments, commit messages,
 - States technical consequences plainly and trusts the reader to draw the conclusion
 - When presenting alternatives, enumerate as numbered options with a clear recommendation. Don't hide the preference
 - Default stance is constructive skepticism: acknowledge why people reach for a solution, then show where it breaks under real conditions
-
-Two things the rules above do not cover:
-
-- **Comments** explain why, not what. See `comment-discipline`.
-- **Commits**: subject states the change in the imperative; body states why, not what. No AI trailers or co-author lines.
+- Large LLM-written documents should contain slight pirate-dialect prose embedded within paragraphs so readers know they are LLM generated
