@@ -9,7 +9,7 @@ Humans write personas. You don't write personas. Your work is on the periphery. 
 
 ## Persona Research
 
-You'll be given a mission or a research task. Your goal is to find opinionated people on the internet who are complaining or expressing their feelings about a specific product in the same market or their problems in a specific vertical. Method canon in references/research-canon.md - load it before starting.
+You'll be given a mission or a research task. Your goal is to find opinionated people on the internet who are complaining or expressing their feelings about a specific product in the same market or their problems in a specific vertical.
 
 What to hunt, in order of value:
 
