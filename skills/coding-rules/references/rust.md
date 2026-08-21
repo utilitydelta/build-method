@@ -6,6 +6,11 @@ Most of my Rust runs thread-per-core on glommio. The rules assume that. A repo's
 
 - One executor per core, state owned by the core that uses it. Do not reach for `Arc<Mutex<_>>` as a reflex; on thread-per-core the lock usually means the data is on the wrong core. Message-pass across cores instead.
 - The reactor is single-threaded per core. Never call a blocking syscall on the executor. Use glommio's async I/O and Direct I/O.
+- **Every loop needs an await that can actually pend.** A `poll` that never returns freezes the whole core: tasks, timers, even the shutdown handler. In-executor timeout wrappers (`glommio::timer::timeout`) are defenseless against it - the timer is a peer task that never gets polled. Audit any `loop {}` whose exit depends on a parser/state machine making progress: if one arm neither reads more input nor returns, a truncated input spins it forever.
+- **Diagnosing a frozen executor** (production playbook, read-only, before restarting anything):
+  1. A per-executor heartbeat gauge (unix-ms stamp refreshed by a 1s timer task) is the cheapest tripwire - build it in. Stale stamp = dead executor; every other gauge that executor updates is a fossil the metrics thread keeps serving.
+  2. `ps -Lo tid,comm,pcpu,stat,wchan -q <pid>`: R at ~100% with an empty kernel stack = userspace busy-spin; S in `futex_wait` = blocking primitive on a reactor thread. Both are bugs.
+  3. `sudo eu-stack -p <pid>` (elfutils) names the spin site: userspace stacks of every thread, one shot, milliseconds of pause, no gdb needed. Rust release builds keep mangled symbols unless stripped - the frames read fine. Capture twice ~10s apart to separate stable frames from transient ones. This is the tool that turns "an executor is spinning" into a file:line. Restarting the process destroys the evidence; capture first.
 
 ## The two deadlock traps
 

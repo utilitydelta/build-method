@@ -56,6 +56,16 @@ Some things are hard to verify empirically, like UX. All tests have a discrete f
 
 Track visually altered screens in `visual-residual.md`: the screens changed, the journeys affected, how to drive the app to each (route, seed data, flag). The human walks that list after the session instead of hunting the whole app.
 
+## When the goal is a field defect
+
+A common failure is an agent writing a red unit test and leaving it at that layer.
+At times, unit tests can be synthetic.  Too much mocking or exercise a branch of code that never runs in reality.
+Different layers provide different benefits, write failing tests at integration and chaos/higher layers.
+
+live running real instances with scraped metrics and traces, showing the reproduction of the incident  beats an artificial reproduction every time.
+
+Defects can be complex and multi-layered. Establish the causal chain before fixing the downstream one.
+
 ## Files to maintain
 
 An agent could be interrupted at any time.  Ensure files are kept up to date.

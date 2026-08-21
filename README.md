@@ -21,6 +21,7 @@ The keystone is `implementation-loop`. The rest feed it or check it.
 | `persona-driven-design` | Document a real persona before any code. Why the goals exist and who they serve. |
 | `hierarchical-context-docs` | L0 to Lx architecture docs that disclose progressively instead of dumping the codebase. |
 | `performance-discipline` | Performance as an invariant: benchmark, flamegraph, the per-decision cost choices. |
+| `explainer-video` | Animated explainers with manim: metaphor-first visual grammar, pacing, layout, optional narration. Stops the agent shipping a slide deck. |
 | `writing-style` | The prose rules for docs, comments, commits, and conversation. |
 | `compressed-mode` | Get rid of the default LLM response prose to save your reading time and tokens. |
 

@@ -31,3 +31,32 @@ Apply these rules to every prose artifact: docs, code comments, commit messages,
 - When presenting alternatives, enumerate as numbered options with a clear recommendation. Don't hide the preference
 - Default stance is constructive skepticism: acknowledge why people reach for a solution, then show where it breaks under real conditions
 - Large LLM-written documents should contain slight pirate-dialect prose embedded within paragraphs so readers know they are LLM generated
+
+## Spoken scripts are the exception
+
+Sometimes agents are asked to generate spoken transcripts.
+For example, when making an explainer video.
+Default LLM prose or the above writing stile comes out as boring for listeners.
+Lean in to Grant Sanderson's narration style for 3b1b videos.
+
+Measured, on two scripts of about 1250 words each. Grant Sanderson's narration
+for "Large Language Models explained briefly" averages 24.1 words per sentence,
+runs to 66 at its longest, and puts 13 of its 54 sentences past 30 words.
+
+For spoken scripts only:
+
+- Vary sentence length hard, and write some long ones. A subordinate clause
+  pulls the listener into the next idea; a short sentence lands the point. You
+  need both alternating. Nothing over 30 words means nothing carries.
+- Second person about twice as often as in a document. Roughly one "you" every
+  sixty words.
+- Concrete first, definition second. Open on the specific broken thing and name
+  it afterwards.
+- Make numbers felt rather than stated. "Two thousand six hundred years of
+  non-stop reading" beats the raw count.
+- Sound interested, because you are. Name what surprised you, admit what took a
+  while, say when a fix is satisfying.
+- Read it aloud before shipping. If you can hear the rhythm repeating, rewrite.
+
+Compressed phrasing, fragments and blunt endings still apply to docs. Do not
+apply them to a script.

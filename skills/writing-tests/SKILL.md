@@ -56,10 +56,27 @@ Not a fifth layer. These run inside the layers above.
 - Screenshots are byte diffs against a human-approved baseline. Skip them where baseline churn costs more than it catches.
 - Quarantine flaky tests and flag them for human triage. Most flakes are test-side timing; the human decides which are product bugs.
 
+## Defect reproduction
+
+A common failure is an agent writing a red unit test and leaving it at that layer.
+At times, unit tests can be synthetic.  Too much mocking or exercise a branch of code that never runs in reality.
+Different layers provide different benefits, write failing tests at integration and chaos/higher layers.
+
+live running real instances with scraped metrics and traces, showing the reproduction of the incident  beats an artificial reproduction every time.
+
+Defects can be complex and multi-layered. Establish the causal chain before fixing the downstream one.
+
+- Do not assume the test harness is correct.
+- Avoid using proxies to measure correctness.
+- 
+
+Common failure modes observed in agent led test writing include:
+- Bugs in the harness itself. Trust nothing.
+- using a proxy measure instead of a more direct measure to assert failure or correctness.
+- After the fix, a green test doesn't mean every edge case is covered.  Mutate and check for failure.
+
 ## Order
 
 Write the test first and watch it fail. A test that was never red proves nothing.
-
-A bug fix starts with the failing test that reproduces it.
 
 Document how to run each suite. A test nobody can run does not exist.
