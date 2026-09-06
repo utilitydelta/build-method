@@ -23,6 +23,13 @@ uv venv --python 3.12 .venv && uv pip install --python .venv/bin/python -e .
 
 Move the pin only after a smoke render passes on the new commit.
 
+**Reuse the environment.** Clone + venv + editable install + piper voice download cost ~5 minutes
+of a measured 33-minute build, and the scratch tree runs ~670 MB — a pure per-run tax when the
+env lives in a throwaway dir. Keep it at a stable path keyed by the pinned commit
+(`~/.cache/manimgl-env/<commit>/`, voices beside it), check for it before cloning, and rebuild
+only when the pin moves. The smoke render still runs every time; it proves the cached env is
+alive, not just present.
+
 One deliberate exception: human-replay's `generate-clip` stays on pinned manim CE for short 2D clips built in a disposable, possibly GPU-less sandbox. CE installs from a wheel in seconds, its Cairo renderer needs no GL context at all, and none of manimgl's 3D or iteration advantages apply at that scale. The two choices disagree on purpose.
 
 ## Read the source, do not guess the API
@@ -46,12 +53,20 @@ A `hasattr` sweep over `manimlib` confirms a batch of names in one shot and cost
 - **LaTeX.** `Tex`, `TexText` and `Brace` shell out to `latex` and hard fail without it. `Text` uses pango and does not. `DecimalNumber` is built from `Text` in manimgl, so live numbers work with no LaTeX at all. Check `which latex` before planning any maths typesetting.
 - **Headless.** `-w` writes the file rather than opening a window. Rendering wants a GL context but does not necessarily need a display: it has rendered fine with `DISPLAY` unset on a machine with a GPU. A bare container without one may still fail. Prove the environment with a five-line smoke scene before building anything.
 - **Output path.** Files land in `videos/` relative to the project root, named after the scene class.
+- **Sibling imports.** manimgl's loader imports the scene file by path and does not put its
+  directory on `sys.path`, so `from beats import BEATS` fails even with beats.py sitting next to
+  scenes.py. Open the scene file with `sys.path.insert(0, str(Path(__file__).parent))` before
+  any sibling import.
 - **Scene clock.** `self.time` is the running scene time. That is what you record beat offsets against.
 - **Preview cost.** `--resolution 640x360 --fps 12` renders in seconds. Iterate there and only go to 1920x1080 at 30fps at the end.
 
 ## Render harness
 
 Write one script that renders every scene, muxes, concatenates and reports. Do it early. The alternative is hand-running commands and losing track of which scene is stale.
+
+Do not write it from scratch: `references/plumbing/` carries working templates for the harness,
+beat synthesis, the audio/srt assembly, and the `BeatMixin` — the content-independent half of
+every narrated build. Copy, adapt, keep the scene itself yours.
 
 It should take a `--preview` flag, an `--only` list for iterating on one scene, and print each scene's duration and the running total. Those durations are your edit: if the title card is longer than the mechanism, you can see it without watching anything.
 
@@ -78,7 +93,9 @@ python -m piper.download_voices en_GB-alan-medium --download-dir voices
 The arrangement that works:
 
 1. Author narration as ordered beats in a plain data file, keyed by scene and beat id. Keep a separate `say` field for anything that does not read aloud the way it is written. `CRC32C`, `NVMe`, `I/O`, `718`, `zstd` all need spelling out for the synthesiser while the subtitle keeps the real form.
-2. Synthesise each beat to its own wav and record its duration.
+2. Synthesise each beat to its own wav and record its duration — and do this BEFORE animating
+   anything. A three-minute script synthesises in seconds, and with every beat's floor duration
+   known up front, scene timing is designed in rather than retrofitted after a render surprises you.
 3. In the scene, wrap each beat in a context manager that runs the animations, then waits out whatever time is left. The beat holds for at least its audio length, never less. The subtitle goes to the `.srt`, not the stage.
 4. The scene records the actual start time of every beat and writes it out.
 5. Assemble the audio track by laying each wav at its recorded offset into a silent buffer of the right length. numpy and the `wave` module are enough.

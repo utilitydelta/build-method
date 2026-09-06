@@ -13,6 +13,7 @@ Detection of mistakes can only happen with empirical evidence or inferential unb
 
 ## When starting
 
+- Take a quick look at `scraps.md` from recent prior sesions, and recent commits. Anything that impacts or influences this sessions' goal?
 - Break the `goal.md` into phases.
 - Write phases into `session-state.md` and log start in `progress.md`
 
@@ -32,6 +33,8 @@ The phase is done when the triage agent returns no more remaining Do items. Don'
 
 Humans don't read inter-phase model output. Keep it concise.
 
+No working trees, no branches, just commit to whatever is the current branch. It's up to the human to create the branch or the sandbox before you start. Commits are also not for tracking progress, keep it all in session/*.
+
 On phase completion, summarize the phase briefly and then move on automatically to the next phase.
 
 ## Sub-Agent Use
@@ -40,7 +43,7 @@ On phase completion, summarize the phase briefly and then move on automatically 
 
 **Implementation Agent** - Told to implement a phase, runs tests, writes tests (use TDD, prefer unit tests while building), white-box. Code coverage analysis, mutation testing, fuzzing as applicable. Tracing, metrics, integration tests. Tests -> Build Increment -> Run -> Measure. Implementation agent is not allowed to edit review or blind authored tests. Wrong-looking review or blind authored tests go back through review and triage.
 
-**Adversarial Review** - The adversarial review pokes holes. Gets the phase goal, reviews the code, runs the tests, passes judgement. All defect claims must return with evidence. Write failing tests as evidence.
+**Adversarial Review** - The adversarial review pokes holes. Gets the phase goal, reviews the code, runs the tests, passes judgement. All defect claims must return with evidence. Write failing tests as evidence. Claims need to be verified end to end, never accept as ground truth.
 
 **Triage Agent** - Send review results verbatim to the triage agent. Applies the 4D's to the output from the Adversarial Review agent. Do, Defer, Delegate, Delete. Explicitly exists to avoid gold plating.
 
@@ -51,6 +54,10 @@ Adversarial review by an agent with a fresh context window finds bugs. Empirical
 Blind oracle agent implements black-box tests against a contract, no code internals. Implementer agent implements white-box tests by inspecting the implementation.
 
 Follow the `writing-tests` skill, and other skills the developer has present related to testing.
+
+Systems under test have (global) configuration settings that are permutation multiplyers, consider what needs to be included in tests. Identify the variables / dimensions of the problem first.
+
+Mutation tests can be dangerous. Agents have destroyed uncommitted work when tasked with these types of tests. Call it out (soft control) or commit first or stash (hard control).
 
 Some things are hard to verify empirically, like UX. All tests have a discrete falsification depth. Call out the gaps loudly to the developer after completion. That's where the remaining bugs are.
 

@@ -1,7 +1,7 @@
 {
   "name": "build-method",
   "description": "UtilityDelta's engineering method as Claude Code skills. The adversarial loop, the scout, persona-first design, writing and comment discipline, hierarchical context docs, the test taxonomy, performance as an invariant, cross-language coding style, and animated explainers that a human brain can actually follow. The cross-cutting methodology that sits above any one repo.",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "author": {
     "name": "Tyson Brown"
   },

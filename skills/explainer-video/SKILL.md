@@ -110,6 +110,13 @@ You cannot review an animation by reading its code. Render at low resolution, ex
 
 Belay any thought of skipping this, matey. It is the whole quality loop.
 
+Two pairs of eyes beat one. The split that measured well: the context that knows the subject
+authors the shot list and narration beats as a contract, a fresh context builds against it, and
+the author independently reviews the builder's contact sheets at the end. The builder normalises
+its own choices by the third render; the author, seeing only frames, does not. A shot list tight
+enough to build from — every beat with its claim, verb, camera move, and sourced numbers — is
+what makes the handoff lossless; the one measured this way came back with near-zero deviations.
+
 ## Before you call it done
 
 Score it honestly. Any "no" is a rewrite, not a note.

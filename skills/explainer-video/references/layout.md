@@ -60,6 +60,11 @@ Then open `sheet.png` and actually look. A preview render at 640x360 takes secon
 
 Two ffmpeg traps. `tile` needs `-frames:v 1` or it complains about writing multiple files with the same name. And the input frame count must be at least the tile size, or you get a partial sheet with no warning.
 
+One trap in the other direction: the tiles are downscaled, and downscaling manufactures
+collisions — labels that kiss on a 480-wide tile can be comfortably apart at native resolution.
+Before fixing anything a sheet showed you, extract that one frame at native res and confirm.
+One false alarm per build is the going rate, and re-layouting for it is wasted work.
+
 ## Text
 
 - Long strings need manual wrapping. Wrap to two lines and rebalance if the greedy pass leaves a runt.
