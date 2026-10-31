@@ -32,9 +32,28 @@ A goal with a user-facing surface carries `journeys/` alongside `goal.md`. A jou
 - Scout journeys with the same three tools. Findings return as proposed deltas; the human accepts or rejects and stays the author.
 - Scale ceremony to weight. The core journey earns a debate; a settings screen does not.
 
+## Invariants
+
+Rules of the system. Used by the blind oracle and during implementation. Agents use invariants to focus on building the right tests.
+
+`goal.md` carries a `## Invariants` section. One promise per line with its reason and evidence:
+
+```markdown
+## Invariants
+
+- [human] Every acked batch survives a crash at any point. Clients retry only unacked writes.
+- [proposed] A rewind counts only after its flush. A torn rewind falls back to the pre-rewind state (spike-pingpong/model2).
+```
+
+Bots propose. Human ratifies. Evidence earns the invariant - spikes, simulation model, tests. 
+
+Make sure invariants are dedupliated and easy for the human to read and understand.
+
+Invariants carry through the entire build. Push the human to ratify all proposed invariants and discuss them before executing the implementation-loop.
+
 ## Output
 
-Insights and refinements are absorbed back into `goal.md`, especially one-way doors the goal never addressed. Keep the goal plain prose (`writing-style` applies). Reference spikes, do not transcribe them.
+Insights and refinements are absorbed back into `goal.md`, especially one-way doors the goal never addressed. Keep the goal plain prose (`writing-style` applies), apart from the invariant list. Reference spikes, do not transcribe them.
 
 Spikes stay somewhere the implementation-loop can reference them, if required. Not kept permanantly, not committed to git.
 

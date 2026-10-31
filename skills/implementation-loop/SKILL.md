@@ -37,6 +37,14 @@ No working trees, no branches, just commit to whatever is the current branch. It
 
 On phase completion, summarize the phase briefly and then move on automatically to the next phase.
 
+## Complex Data Structures Get Their Own Phase
+
+Sometimes the bot will determine a gap - no 3rd party library, and a requirement for a unique, complex data structure or algorithm to help implement part of the goal. It emerges mid-phase. It might need to carry state and have complex invariants.
+
+In this case consider splitting it out to its own phase, with its own blind oracle, adversarial reviews, propery, mutatant tests, etc.
+
+Judge on complexity. 
+
 ## Sub-Agent Use
 
 **Blind Oracle Agent** - Is provided the goal context and a test surface or facade. Implements tests to verify a later implementation empirically. Black-box. Journey files in `journeys/` are contracts too; bind e2e tests to them the same way.
