@@ -1,10 +1,10 @@
 # build-method
 
-The engineering method, as Claude Code skills. The things I would otherwise re-explain at the start of every build, written once and loaded everywhere.
+Write safe, high quality code with agents. 
 
-Why does this exist? An agent left alone writes code that looks right, and looking right is not evidence. The method makes the agent prove its work empirically instead: a goal is validated by a scout before it costs anything, built autonomously under an implementation loop where every phase must survive its tests and a fresh-context adversarial review, and folded back into the shippable code by a human who replays every decision. The grind goes to the agents. The understanding stays with the human.
+This means breaking up agent work into sessions. Research and spikes feed each sessions' goal.md. Invariants document system behaviour.
 
-This is the cross-cutting layer. It sits above any one repo. It does not know about any one repo's domain or wire contracts - those live in the repos that need them. This is how I build, regardless of the stack.
+`implementation-loop` is designed to build a single sessions' goal. It uses sub-agents heavily and is not cheap but it produces good results.
 
 ![The build method](build-method.png)
 
